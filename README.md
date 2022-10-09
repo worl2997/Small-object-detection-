@@ -1,6 +1,4 @@
-## FCOS: Pytorch Implementation Support PASCAL VOC and MS COCO
-RetinaNet code which is similar with this repo :https://github.com/ChingHo97/RetinaNet-Pytorch-36.4AP
-you can find difference between the anchor free and anchor base.
+## Repository for the multi-scale feature fusion method fo small object detection 
 ###  AP Result
 | PASCAL VOC (800px) | COCO(800px) |
 | :-----------: | :-----------------: |
@@ -20,9 +18,6 @@ you can find difference between the anchor free and anchor base.
 ### Results in coco 
 Train coco2017 on 4 Tesla-V100, 4 imgs for each gpu, init lr=1e-2  using GN,central sampling,GIou.
 
-
-You can download the 37.2 ap result in [Baidu driver link](https://pan.baidu.com/s/1tv0F_nmwiJ47C3zJ5v_C0g), password: cnwm,then put it in checkpoint folder, then run the coco_eval.py
-you can get the result as follows:
 ```python
 Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.372
  Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.559
@@ -77,11 +72,9 @@ I also use the cosine lr to train the voc, and it got 76.7mAP, which is lower th
 ### train for coco
 You can run the train_coco.py, train 24 epoch and you can get the result. You need to change the coco2017 path.
 ### train for PASCAL VOC
-You can run the train_voc.py, train 30 epoch and you can get the result. You need to change the PASCAL07+12 path, you can reference to this repo:https://github.com/YuwenXiong/py-R-FCN
+You can run the train_voc.py, train 30 epoch and you can get the result. You need to change the PASCAL07+12 path
 
 ### Detect Image   
 You can run the detect.py to detect images , this repo provides PASCAL VOC Images detection demo.
 ![test1](assets/000004.jpg)  
 ![test1](assets/000352.jpg)  
-
-thanks to [@VectXmy](https://github.com/VectXmy), I referenced some codes.
