@@ -1,6 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from skipASPP import skipASPP_
+from AFF import iAFF
 import math
 
 class FPN(nn.Module):
@@ -21,6 +22,10 @@ class FPN(nn.Module):
         self.conv_out7 = nn.Conv2d(features, features, kernel_size=3, padding=1, stride=2)
         self.skip_ASPP= skipASPP_(input_channels=256, mid_channels=128, out_channels=64)
         self.use_p5=use_p5
+
+        self.iAFF = iAFF()
+        # self.iAFF_1 =
+
         self.apply(self.init_conv_kaiming)
     def upsamplelike(self,inputs):
         src,target=inputs
@@ -60,8 +65,8 @@ class FPN(nn.Module):
 
         P5 = self.skip_ASPP(P5)
 
-        P4 = P4 + self.upsamplelike([P5,C4])
-        P3 = P3 + self.upsamplelike([P4,C3])
+        P4 = self.iAFF(P4,self.upsamplelike([P5,C4]))
+        P3 = self.iAFF(P3,self.upsamplelike([P4,C3]))
 
         P3 = self.conv_3(P3)
         P4 = self.conv_4(P4)
