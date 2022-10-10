@@ -136,13 +136,13 @@ class ResNet(nn.Module):
         x = self.relu(x)
         x = self.maxpool(x)
 
-        x = self.layer1(x)
-        out3 = self.layer2(x)
-        out4 = self.layer3(out3)
-        out5 = self.layer4(out4)
+        x = self.layer1(x) # 56x56
+        out3 = self.layer2(x) # 28 x 28
+        out4 = self.layer3(out3) # 14x14
+        out5 = self.layer4(out4) # 7x7
 
         if self.if_include_top:
-            x = self.avgpool(out5)
+            x = self.avgpool(out5) # 1 x1 사용할거면 표시
             x = x.view(x.size(0), -1)
             x = self.fc(x)
             return x
@@ -195,7 +195,9 @@ def resnet50(pretrained=False, **kwargs):
     """
     model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
     if pretrained:
-        model.load_state_dict(torch.load('./resnet50.pth'),strict=False)
+        model.load_state_dict(model_zoo.load_url(model_urls['resnet50']), strict=False)
+
+        #model.load_state_dict(torch.load('./resnet50.pth'),strict=False)
     return model
 
 

@@ -11,9 +11,9 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--epochs", type=int, default=30, help="number of epochs")
-parser.add_argument("--batch_size", type=int, default=16, help="size of each image batch")
+parser.add_argument("--batch_size", type=int, default=2, help="size of each image batch")
 parser.add_argument("--n_cpu", type=int, default=4, help="number of cpu threads to use during batch generation")
-parser.add_argument("--n_gpu", type=str, default='0,1', help="number of cpu threads to use during batch generation")
+parser.add_argument("--n_gpu", type=str, default='0', help="number of cpu threads to use during batch generation")
 opt = parser.parse_args()
 os.environ["CUDA_VISIBLE_DEVICES"] = opt.n_gpu
 torch.manual_seed(0)
@@ -24,7 +24,12 @@ cudnn.benchmark = False
 cudnn.deterministic = True
 random.seed(0)
 transform = Transforms()
-train_dataset = VOCDataset(root_dir='/Users/VOC0712',resize_size=[800,1333],
+
+# 데이터 경로
+voc_data_root = '/home/jacky/바탕화면/data/VOCtrainval_11-May-2012/VOCdevkit/VOC2012'
+
+
+train_dataset = VOCDataset(root_dir=voc_data_root,resize_size=[800,1333],
                            split='trainval',use_difficult=False,is_train=True,augment=transform)
 
 model = FCOSDetector(mode="training").cuda()
@@ -66,6 +71,7 @@ for epoch in range(EPOCHS):
         batch_imgs = batch_imgs.cuda()
         batch_boxes = batch_boxes.cuda()
         batch_classes = batch_classes.cuda()
+
 
         #lr = lr_func()
         if GLOBAL_STEPS < WARMPUP_STEPS:
